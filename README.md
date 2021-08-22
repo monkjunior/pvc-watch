@@ -85,7 +85,7 @@ curl $API_SERVER/version --header "Authorization: Bearer $TOKEN" --insecure
 
 ## Building my first cli tool using Go
 
-[client-go](images/client-go.png)
+![client-go](images/client-go.png)
 
 We will use `client-go` project. It is the oldest, of the K8S client frameworks, and therefore come with more knobs
 and features.
@@ -95,7 +95,7 @@ more sophisticated clients.
 
 ## pvcwatch, my first dummy K8S cli tool
 
-[Illustration of pvcwatch](images/pvcwatch.png)
+![Illustration of pvcwatch](images/pvcwatch.png)
 
 The example will highlight several aspects of the K8S Go client including:
 
