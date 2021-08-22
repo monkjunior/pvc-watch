@@ -106,3 +106,9 @@ The example will highlight several aspects of the K8S Go client including:
 - Resource list retrieval and walk through
 
 - Object watch
+
+The K8S Go client framework supports the ability to watch the cluster for **specified API object lifecycle events**
+including `ADDED`, `MODIFIED`, `DELETED`.
+
+For our simple cli tool, we will use this watch ability to monitor and trigger some automated actions (current version
+will just log notification to the standard output).
