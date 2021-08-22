@@ -93,6 +93,8 @@ and features.
 The project is a collection of packages that can accommodate different programming needs from REST-style primitives to
 more sophisticated clients.
 
+It's being maintained by [sig-api-machinery](https://github.com/kubernetes/community/tree/master/sig-api-machinery).
+
 ## pvcwatch, my first dummy K8S cli tool
 
 ![Illustration of pvcwatch](images/pvcwatch.png)
