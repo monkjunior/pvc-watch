@@ -9,7 +9,9 @@ import (
 	"path/filepath"
 
 	coreV1 "k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/api/resource"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 )
@@ -56,6 +58,25 @@ func main() {
 		log.Fatalln(err)
 	}
 	printPVCs(pvcs)
+
+	watcher, err := api.PersistentVolumeClaims(namespace).Watch(context.Background(), listOptions)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	defer watcher.Stop()
+	eventsChan := watcher.ResultChan()
+	log.Println("Calculating total claimed capacity of PVCs on namespace " + namespace)
+	var totalClaimed resource.Quantity
+	for e := range eventsChan {
+		switch e.Type {
+		case watch.Added:
+			totalClaimed.Add(*e.Object.(*coreV1.PersistentVolumeClaim).Spec.Resources.Requests.Storage())
+			log.Println("Total claimed PVCs: " + totalClaimed.String())
+		case watch.Deleted:
+			totalClaimed.Sub(*e.Object.(*coreV1.PersistentVolumeClaim).Spec.Resources.Requests.Storage())
+			log.Println("Total claimed PVCs: " + totalClaimed.String())
+		}
+	}
 }
 
 func printPVCs(pvcs *coreV1.PersistentVolumeClaimList) {
